@@ -39,7 +39,7 @@ export const fetchSubscriptions = (token: string) =>
   argQuery<RawSubscription>(token, `
     ResourceContainers
     | where type == 'microsoft.resources/subscriptions'
-    | project subscriptionId, name = tostring(properties.displayName)
+    | project subscriptionId = tostring(subscriptionId), name = tostring(name)
   `)
 
 export const fetchAdvisor = (token: string) =>

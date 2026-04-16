@@ -7,12 +7,12 @@ interface Props {
 }
 
 export function ResourcesBySubscription({ data, subscriptions }: Props) {
-  const { filters, setFilter } = useFilters()
+  const { filters, toggleFilter } = useFilters()
 
   const handleClick = (entry: { name: string }) => {
     const sub = subscriptions.find(s => s.name === entry.name)
     if (!sub) return
-    setFilter('subscriptionId', filters.subscriptionId === sub.id ? null : sub.id)
+    toggleFilter('subscriptionIds', sub.id)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,7 +43,7 @@ export function ResourcesBySubscription({ data, subscriptions }: Props) {
           <Bar dataKey="count" radius={[4, 4, 0, 0]} cursor="pointer">
             {data.map((entry) => {
               const sub = subscriptions.find(s => s.name === entry.name)
-              const isActive = filters.subscriptionId === null || filters.subscriptionId === sub?.id
+              const isActive = filters.subscriptionIds.length === 0 || filters.subscriptionIds.includes(sub?.id ?? '')
               return <Cell key={entry.name} fill={isActive ? 'hsl(var(--primary))' : 'hsl(var(--muted))'} />
             })}
           </Bar>

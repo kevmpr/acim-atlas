@@ -22,10 +22,10 @@ export interface AdvisorRecommendation {
 }
 
 export interface AtlasFilters {
-  subscriptionId: string | null
-  resourceGroup: string | null
-  location: string | null
-  resourceType: string | null
+  subscriptionIds: string[]
+  resourceGroups: string[]
+  locations: string[]
+  resourceTypes: string[]
 }
 
 export interface KPIData {

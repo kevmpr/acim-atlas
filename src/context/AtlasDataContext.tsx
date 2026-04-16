@@ -40,7 +40,10 @@ export function AtlasDataProvider({
     Promise.all([fetchResources(token), fetchSubscriptions(token), fetchAdvisor(token)])
       .then(([rawRes, subs, rawAdv]) => {
         const subMap = new Map(subs.map(s => [s.subscriptionId, s.name]))
-        setSubscriptions(subs.map(s => ({ id: s.subscriptionId, name: s.name })))
+        setSubscriptions(subs.map(s => ({
+          id: s.subscriptionId,
+          name: (s.name && s.name !== 'null' && s.name.trim() !== '') ? s.name : s.subscriptionId,
+        })))
 
         setResources(rawRes.map(r => ({
           id: r.id,

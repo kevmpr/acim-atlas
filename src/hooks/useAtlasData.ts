@@ -9,13 +9,13 @@ export function useAtlasData() {
 
   const filteredResources = useMemo(() => {
     return allResources.filter(r => {
-      if (filters.subscriptionId && r.subscriptionId !== filters.subscriptionId) return false
-      if (filters.resourceGroup && r.resourceGroup !== filters.resourceGroup) return false
-      if (filters.location && r.location !== filters.location) return false
-      if (filters.resourceType && r.type !== filters.resourceType) return false
+      if (filters.subscriptionIds.length > 0 && !filters.subscriptionIds.includes(r.subscriptionId)) return false
+      if (filters.resourceGroups.length > 0 && !filters.resourceGroups.includes(r.resourceGroup)) return false
+      if (filters.locations.length > 0 && !filters.locations.includes(r.location)) return false
+      if (filters.resourceTypes.length > 0 && !filters.resourceTypes.includes(r.type)) return false
       return true
     })
-  }, [allResources, filters])
+  }, [filters, allResources])
 
   const kpi: KPIData = useMemo(() => {
     const untagged = filteredResources.filter(r => Object.keys(r.tags).length === 0).length

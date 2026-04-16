@@ -6,10 +6,10 @@ interface Props {
 }
 
 export function TopResourceTypes({ data }: Props) {
-  const { filters, setFilter } = useFilters()
+  const { filters, toggleFilter } = useFilters()
 
   const handleClick = (entry: { name: string; fullType: string }) => {
-    setFilter('resourceType', filters.resourceType === entry.fullType ? null : entry.fullType)
+    toggleFilter('resourceTypes', entry.fullType)
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,7 +47,7 @@ export function TopResourceTypes({ data }: Props) {
             {data.map((entry) => (
               <Cell
                 key={entry.name}
-                fill={filters.resourceType === entry.fullType ? 'hsl(var(--primary))' : 'hsl(217 91% 70%)'}
+                fill={filters.resourceTypes.includes(entry.fullType) ? 'hsl(var(--primary))' : 'hsl(217 91% 70%)'}
               />
             ))}
           </Bar>

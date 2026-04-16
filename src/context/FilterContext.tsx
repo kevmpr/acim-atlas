@@ -3,15 +3,15 @@ import type { AtlasFilters } from '../types/atlas'
 
 interface FilterContextValue {
   filters: AtlasFilters
-  setFilter: (key: keyof AtlasFilters, value: string | null) => void
+  toggleFilter: (key: keyof AtlasFilters, value: string) => void
   clearFilters: () => void
 }
 
 const DEFAULT_FILTERS: AtlasFilters = {
-  subscriptionId: null,
-  resourceGroup: null,
-  location: null,
-  resourceType: null,
+  subscriptionIds: [],
+  resourceGroups: [],
+  locations: [],
+  resourceTypes: [],
 }
 
 const FilterContext = createContext<FilterContextValue | null>(null)
@@ -19,14 +19,20 @@ const FilterContext = createContext<FilterContextValue | null>(null)
 export function FilterProvider({ children }: { children: ReactNode }) {
   const [filters, setFilters] = useState<AtlasFilters>(DEFAULT_FILTERS)
 
-  const setFilter = (key: keyof AtlasFilters, value: string | null) => {
-    setFilters(prev => ({ ...prev, [key]: value }))
+  const toggleFilter = (key: keyof AtlasFilters, value: string) => {
+    setFilters(prev => {
+      const current = prev[key]
+      const next = current.includes(value)
+        ? current.filter(v => v !== value)
+        : [...current, value]
+      return { ...prev, [key]: next }
+    })
   }
 
   const clearFilters = () => setFilters(DEFAULT_FILTERS)
 
   return (
-    <FilterContext.Provider value={{ filters, setFilter, clearFilters }}>
+    <FilterContext.Provider value={{ filters, toggleFilter, clearFilters }}>
       {children}
     </FilterContext.Provider>
   )
