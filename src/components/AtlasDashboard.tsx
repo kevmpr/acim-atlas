@@ -7,6 +7,7 @@ import { AdvisorChart } from './AdvisorChart'
 import { RegionBubbles } from './RegionBubbles'
 import { TagGovernance } from './TagGovernance'
 import { ResourceTable } from './ResourceTable'
+import { ComplianceScore } from './ComplianceScore'
 
 export function AtlasDashboard() {
   const {
@@ -22,6 +23,10 @@ export function AtlasDashboard() {
     error,
     isLive,
   } = useAtlasData()
+
+  const subscriptionNames = [...new Set(filteredResources.map(r => r.subscriptionName))]
+  const resourceGroupCount = new Set(filteredResources.map(r => r.resourceGroup)).size
+  const resourceTypeCount = new Set(filteredResources.map(r => r.type)).size
 
   if (loading) return (
     <div className="flex items-center justify-center h-screen bg-background">
@@ -65,8 +70,13 @@ export function AtlasDashboard() {
       {/* Filters */}
       <FilterBar options={availableOptions} />
 
-      {/* KPIs */}
-      <KPICards kpi={kpi} />
+      {/* KPI Rows (2 rows of 4) */}
+      <KPICards
+        kpi={kpi}
+        subscriptionNames={subscriptionNames}
+        resourceGroupCount={resourceGroupCount}
+        resourceTypeCount={resourceTypeCount}
+      />
 
       {/* Charts row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -78,8 +88,11 @@ export function AtlasDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <AdvisorChart data={advisorByImpact} />
         <RegionBubbles data={byLocation} />
-        <TagGovernance untagged={untaggedResources} total={filteredResources.length} />
+        <ComplianceScore kpi={kpi} total={filteredResources.length} />
       </div>
+
+      {/* Tag governance */}
+      <TagGovernance untagged={untaggedResources} total={filteredResources.length} />
 
       {/* Resource table */}
       <ResourceTable resources={filteredResources} />

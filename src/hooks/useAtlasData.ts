@@ -30,9 +30,14 @@ export function useAtlasData() {
   }, [filteredResources, advisor])
 
   const bySubscription = useMemo(() => {
-    const map = new Map<string, number>()
-    filteredResources.forEach(r => map.set(r.subscriptionName, (map.get(r.subscriptionName) ?? 0) + 1))
-    return Array.from(map.entries()).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
+    const map = new Map<string, { count: number; id: string }>()
+    filteredResources.forEach(r => {
+      const existing = map.get(r.subscriptionName)
+      map.set(r.subscriptionName, { count: (existing?.count ?? 0) + 1, id: r.subscriptionId })
+    })
+    return Array.from(map.entries())
+      .map(([name, { count, id }]) => ({ name, count, id }))
+      .sort((a, b) => b.count - a.count)
   }, [filteredResources])
 
   const byType = useMemo(() => {
@@ -71,10 +76,10 @@ export function useAtlasData() {
 
   const availableOptions = useMemo(() => ({
     subscriptions: [...new Map(allResources.map(r => [r.subscriptionId, { id: r.subscriptionId, name: r.subscriptionName }])).values()],
-    resourceGroups: [...new Set(filteredResources.map(r => r.resourceGroup))].sort(),
+    resourceGroups: [...new Set(allResources.map(r => r.resourceGroup))].sort(),
     locations: [...new Set(allResources.map(r => r.location))].sort(),
     resourceTypes: [...new Set(allResources.map(r => r.type))].sort(),
-  }), [allResources, filteredResources])
+  }), [allResources])
 
   return {
     filteredResources, kpi, bySubscription, byType, byLocation,
