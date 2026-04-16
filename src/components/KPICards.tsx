@@ -17,7 +17,7 @@ export function KPICards({ kpi, resourceGroupCount, resourceTypeCount }: Props) 
   return (
     <div className="space-y-4">
       {/* Row 1 — Inventory */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div data-atlas="kpi-inventory" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Recursos */}
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-3">
@@ -64,7 +64,7 @@ export function KPICards({ kpi, resourceGroupCount, resourceTypeCount }: Props) 
       </div>
 
       {/* Row 2 — Health */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div data-atlas="kpi-health" className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Sin Tags */}
         <div className="bg-card border border-border rounded-xl p-4">
           <div className="flex items-center gap-2 mb-3">

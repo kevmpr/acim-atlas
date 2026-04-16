@@ -12,13 +12,14 @@ export function TagGovernance({ untagged, total }: Props) {
   const barColor = pct > 30 ? 'bg-red-500' : pct > 15 ? 'bg-yellow-500' : 'bg-emerald-500'
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4">
+    <div data-atlas="tag-governance" className="bg-card border border-border rounded-xl p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Tag size={16} className="text-muted-foreground" />
           <h3 className="text-sm font-semibold text-foreground">Gobernanza de Tags</h3>
         </div>
         <button
+          data-atlas="export-btn"
           onClick={() => exportUntaggedToCsv(untagged)}
           className="flex items-center gap-1.5 text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
         >

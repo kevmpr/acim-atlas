@@ -140,7 +140,7 @@ export function ResourceTable({ resources }: Props) {
   return (
     <>
       {selected && <ResourceModal resource={selected} onClose={() => setSelected(null)} />}
-      <div className="bg-card border border-border rounded-xl overflow-hidden">
+      <div data-atlas="resource-table" className="bg-card border border-border rounded-xl overflow-hidden">
         <div className="px-4 py-3 border-b border-border flex flex-col sm:flex-row items-start sm:items-center gap-3">
           <div>
             <h3 className="text-sm font-semibold text-foreground">Inventario de Recursos</h3>
@@ -152,6 +152,7 @@ export function ResourceTable({ resources }: Props) {
             <div className="relative flex-1 sm:w-64">
               <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
               <input
+                data-atlas="table-search"
                 value={search}
                 onChange={e => handleSearch(e.target.value)}
                 placeholder="Buscar recursos..."

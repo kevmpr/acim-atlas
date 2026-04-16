@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App'
+import { AtlasTutorialOverlay } from './components/tutorial/AtlasTutorialOverlay'
 
 // Apply theme from URL param or localStorage
 const params = new URLSearchParams(window.location.search)
@@ -28,5 +29,6 @@ const tenantId = params.get('tenantId')
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <App token={token} tenantId={tenantId} />
+    <AtlasTutorialOverlay />
   </StrictMode>
 )

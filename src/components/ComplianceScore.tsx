@@ -31,7 +31,7 @@ export function ComplianceScore({ kpi, total }: { kpi: KPIData; total: number })
   const label = score >= 80 ? 'Bueno' : score >= 60 ? 'Regular' : 'Crítico'
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
+    <div data-atlas="compliance-score" className="bg-card border border-border rounded-xl p-4 flex items-center gap-4">
       <div className="relative flex-shrink-0">
         <ScoreRing score={score} color={color} />
         <div className="absolute inset-0 flex flex-col items-center justify-center">

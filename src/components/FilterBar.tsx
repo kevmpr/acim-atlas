@@ -82,33 +82,41 @@ export function FilterBar({ options }: Props) {
   const hasFilters = Object.values(filters).some((arr: string[]) => arr.length > 0)
 
   return (
-    <div className="flex flex-wrap items-center gap-2 p-4 bg-card border border-border rounded-xl">
+    <div data-atlas="filter-bar" className="flex flex-wrap items-center gap-2 p-4 bg-card border border-border rounded-xl">
       <span className="text-sm font-medium text-muted-foreground mr-1">Filtrar:</span>
 
-      <MultiSelect
-        label="Suscripciones"
-        options={options.subscriptions.map(s => ({ value: s.id, label: s.name }))}
-        selected={filters.subscriptionIds}
-        onToggle={v => toggleFilter('subscriptionIds', v)}
-      />
-      <MultiSelect
-        label="Resource Groups"
-        options={options.resourceGroups.map(rg => ({ value: rg, label: rg }))}
-        selected={filters.resourceGroups}
-        onToggle={v => toggleFilter('resourceGroups', v)}
-      />
-      <MultiSelect
-        label="Regiones"
-        options={options.locations.map(l => ({ value: l, label: l }))}
-        selected={filters.locations}
-        onToggle={v => toggleFilter('locations', v)}
-      />
-      <MultiSelect
-        label="Tipos"
-        options={options.resourceTypes.map(t => ({ value: t, label: t.split('/').slice(-1)[0] }))}
-        selected={filters.resourceTypes}
-        onToggle={v => toggleFilter('resourceTypes', v)}
-      />
+      <div data-atlas="filter-subs">
+        <MultiSelect
+          label="Suscripciones"
+          options={options.subscriptions.map(s => ({ value: s.id, label: s.name }))}
+          selected={filters.subscriptionIds}
+          onToggle={v => toggleFilter('subscriptionIds', v)}
+        />
+      </div>
+      <div data-atlas="filter-rgs">
+        <MultiSelect
+          label="Resource Groups"
+          options={options.resourceGroups.map(rg => ({ value: rg, label: rg }))}
+          selected={filters.resourceGroups}
+          onToggle={v => toggleFilter('resourceGroups', v)}
+        />
+      </div>
+      <div data-atlas="filter-regions">
+        <MultiSelect
+          label="Regiones"
+          options={options.locations.map(l => ({ value: l, label: l }))}
+          selected={filters.locations}
+          onToggle={v => toggleFilter('locations', v)}
+        />
+      </div>
+      <div data-atlas="filter-types">
+        <MultiSelect
+          label="Tipos"
+          options={options.resourceTypes.map(t => ({ value: t, label: t.split('/').slice(-1)[0] }))}
+          selected={filters.resourceTypes}
+          onToggle={v => toggleFilter('resourceTypes', v)}
+        />
+      </div>
 
       {hasFilters && (
         <button
