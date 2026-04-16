@@ -113,7 +113,8 @@ export function AtlasTutorialOverlay() {
   // Listen for postMessage from Shell
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
-      if (event.origin !== import.meta.env.VITE_SHELL_URL) return
+      const shellUrl = import.meta.env.VITE_SHELL_URL
+      if (shellUrl && event.origin !== shellUrl) return
       if (event.data?.type === 'ACIM_TUTORIAL_START') {
         setCurrentStep(0)
         setIsActive(true)
