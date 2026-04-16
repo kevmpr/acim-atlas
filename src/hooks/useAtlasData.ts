@@ -4,7 +4,7 @@ import { useFilters } from '../context/FilterContext'
 import type { KPIData } from '../types/atlas'
 
 export function useAtlasData() {
-  const { resources: allResources, advisor, loading, error, isLive } = useAtlasDataContext()
+  const { resources: allResources, advisor, subscriptions, loading, error, isLive } = useAtlasDataContext()
   const { filters } = useFilters()
 
   const filteredResources = useMemo(() => {
@@ -75,11 +75,11 @@ export function useAtlasData() {
   )
 
   const availableOptions = useMemo(() => ({
-    subscriptions: [...new Map(allResources.map(r => [r.subscriptionId, { id: r.subscriptionId, name: r.subscriptionName }])).values()],
+    subscriptions: subscriptions,
     resourceGroups: [...new Set(allResources.map(r => r.resourceGroup))].sort(),
     locations: [...new Set(allResources.map(r => r.location))].sort(),
     resourceTypes: [...new Set(allResources.map(r => r.type))].sort(),
-  }), [allResources])
+  }), [subscriptions, allResources])
 
   return {
     filteredResources, kpi, bySubscription, byType, byLocation,
