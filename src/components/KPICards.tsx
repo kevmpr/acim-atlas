@@ -3,12 +3,11 @@ import type { KPIData } from '../types/atlas'
 
 interface Props {
   kpi: KPIData
-  subscriptionNames: string[]
   resourceGroupCount: number
   resourceTypeCount: number
 }
 
-export function KPICards({ kpi, subscriptionNames, resourceGroupCount, resourceTypeCount }: Props) {
+export function KPICards({ kpi, resourceGroupCount, resourceTypeCount }: Props) {
   const tagColor = kpi.untaggedPercent > 30
     ? 'text-red-500 bg-red-50 dark:bg-red-950'
     : kpi.untaggedPercent > 15
@@ -38,15 +37,7 @@ export function KPICards({ kpi, subscriptionNames, resourceGroupCount, resourceT
             </div>
             <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Suscripciones</span>
           </div>
-          <p className="text-3xl font-bold text-foreground">{subscriptionNames.length}</p>
-          <div className="flex flex-wrap gap-1 mt-2">
-            {subscriptionNames.slice(0, 4).map(n => (
-              <span key={n} className="text-xs bg-indigo-50 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 px-2 py-0.5 rounded-full">{n}</span>
-            ))}
-            {subscriptionNames.length > 4 && (
-              <span className="text-xs text-muted-foreground">+{subscriptionNames.length - 4}</span>
-            )}
-          </div>
+          <p className="text-3xl font-bold text-foreground">{kpi.activeSubscriptions}</p>
         </div>
 
         {/* Resource Groups */}

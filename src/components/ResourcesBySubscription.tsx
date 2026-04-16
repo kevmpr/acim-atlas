@@ -49,7 +49,6 @@ export function ResourcesBySubscription({ data, subscriptions }: Props) {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      <p className="text-xs text-muted-foreground mt-2 text-center">Clic en barra para filtrar</p>
     </div>
   )
 }

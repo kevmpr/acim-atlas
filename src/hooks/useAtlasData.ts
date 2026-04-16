@@ -4,7 +4,7 @@ import { useFilters } from '../context/FilterContext'
 import type { KPIData } from '../types/atlas'
 
 export function useAtlasData() {
-  const { resources: allResources, advisor, subscriptions, loading, error, isLive } = useAtlasDataContext()
+  const { resources: allResources, advisor, subscriptions, loading, error, isLive, hasToken } = useAtlasDataContext()
   const { filters } = useFilters()
 
   const filteredResources = useMemo(() => {
@@ -84,6 +84,6 @@ export function useAtlasData() {
   return {
     filteredResources, kpi, bySubscription, byType, byLocation,
     advisorByImpact, untaggedResources, availableOptions,
-    loading, error, isLive,
+    loading, error, isLive, hasToken,
   }
 }

@@ -1,6 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { fetchResources, fetchSubscriptions, fetchAdvisor } from '../lib/argService'
-import { MOCK_RESOURCES, MOCK_ADVISOR } from '../mock/mockData'
 import type { AzureResource, AdvisorRecommendation } from '../types/atlas'
 
 interface CtxValue {
@@ -10,6 +9,7 @@ interface CtxValue {
   loading: boolean
   error: string | null
   isLive: boolean
+  hasToken: boolean
 }
 
 const Ctx = createContext<CtxValue | null>(null)
@@ -17,19 +17,20 @@ const Ctx = createContext<CtxValue | null>(null)
 export function AtlasDataProvider({
   token, children,
 }: { token: string | null; children: ReactNode }) {
-  const [resources, setResources]         = useState<AzureResource[]>(MOCK_RESOURCES)
-  const [advisor, setAdvisor]             = useState<AdvisorRecommendation[]>(MOCK_ADVISOR)
+  const [resources, setResources]         = useState<AzureResource[]>([])
+  const [advisor, setAdvisor]             = useState<AdvisorRecommendation[]>([])
   const [subscriptions, setSubscriptions] = useState<{ id: string; name: string }[]>([])
   const [loading, setLoading]             = useState(false)
   const [error, setError]                 = useState<string | null>(null)
   const [isLive, setIsLive]               = useState(false)
 
+  const hasToken = !!token
+
   useEffect(() => {
     if (!token) {
-      setResources(MOCK_RESOURCES)
-      setAdvisor(MOCK_ADVISOR)
-      const mockSubs = [...new Map(MOCK_RESOURCES.map(r => [r.subscriptionId, { id: r.subscriptionId, name: r.subscriptionName }])).values()]
-      setSubscriptions(mockSubs)
+      setResources([])
+      setAdvisor([])
+      setSubscriptions([])
       setIsLive(false)
       return
     }
@@ -71,15 +72,15 @@ export function AtlasDataProvider({
       .catch(err => {
         const msg = err instanceof Error ? err.message : String(err)
         setError(msg)
-        setResources(MOCK_RESOURCES)
-        setAdvisor(MOCK_ADVISOR)
+        setResources([])
+        setAdvisor([])
         setSubscriptions([])
         setIsLive(false)
       })
       .finally(() => setLoading(false))
   }, [token])
 
-  return <Ctx.Provider value={{ resources, advisor, subscriptions, loading, error, isLive }}>{children}</Ctx.Provider>
+  return <Ctx.Provider value={{ resources, advisor, subscriptions, loading, error, isLive, hasToken }}>{children}</Ctx.Provider>
 }
 
 export function useAtlasDataContext() {
