@@ -1,20 +1,21 @@
 import { useMemo } from 'react'
-import { MOCK_RESOURCES, MOCK_ADVISOR } from '../mock/mockData'
+import { useAtlasDataContext } from '../context/AtlasDataContext'
 import { useFilters } from '../context/FilterContext'
 import type { KPIData } from '../types/atlas'
 
 export function useAtlasData() {
+  const { resources: allResources, advisor, loading, error, isLive } = useAtlasDataContext()
   const { filters } = useFilters()
 
   const filteredResources = useMemo(() => {
-    return MOCK_RESOURCES.filter(r => {
+    return allResources.filter(r => {
       if (filters.subscriptionId && r.subscriptionId !== filters.subscriptionId) return false
       if (filters.resourceGroup && r.resourceGroup !== filters.resourceGroup) return false
       if (filters.location && r.location !== filters.location) return false
       if (filters.resourceType && r.type !== filters.resourceType) return false
       return true
     })
-  }, [filters])
+  }, [allResources, filters])
 
   const kpi: KPIData = useMemo(() => {
     const untagged = filteredResources.filter(r => Object.keys(r.tags).length === 0).length
@@ -22,11 +23,11 @@ export function useAtlasData() {
       totalResources: filteredResources.length,
       activeSubscriptions: new Set(filteredResources.map(r => r.subscriptionId)).size,
       untaggedPercent: filteredResources.length > 0 ? Math.round((untagged / filteredResources.length) * 100) : 0,
-      advisorHigh: MOCK_ADVISOR.filter(a => a.impact === 'High').length,
-      advisorMedium: MOCK_ADVISOR.filter(a => a.impact === 'Medium').length,
-      advisorLow: MOCK_ADVISOR.filter(a => a.impact === 'Low').length,
+      advisorHigh: advisor.filter(a => a.impact === 'High').length,
+      advisorMedium: advisor.filter(a => a.impact === 'Medium').length,
+      advisorLow: advisor.filter(a => a.impact === 'Low').length,
     }
-  }, [filteredResources])
+  }, [filteredResources, advisor])
 
   const bySubscription = useMemo(() => {
     const map = new Map<string, number>()
@@ -58,10 +59,10 @@ export function useAtlasData() {
   }, [filteredResources])
 
   const advisorByImpact = useMemo(() => [
-    { name: 'High', value: MOCK_ADVISOR.filter(a => a.impact === 'High').length, color: '#ef4444' },
-    { name: 'Medium', value: MOCK_ADVISOR.filter(a => a.impact === 'Medium').length, color: '#f97316' },
-    { name: 'Low', value: MOCK_ADVISOR.filter(a => a.impact === 'Low').length, color: '#eab308' },
-  ], [])
+    { name: 'High', value: advisor.filter(a => a.impact === 'High').length, color: '#ef4444' },
+    { name: 'Medium', value: advisor.filter(a => a.impact === 'Medium').length, color: '#f97316' },
+    { name: 'Low', value: advisor.filter(a => a.impact === 'Low').length, color: '#eab308' },
+  ], [advisor])
 
   const untaggedResources = useMemo(() =>
     filteredResources.filter(r => Object.keys(r.tags).length === 0),
@@ -69,11 +70,15 @@ export function useAtlasData() {
   )
 
   const availableOptions = useMemo(() => ({
-    subscriptions: [...new Map(MOCK_RESOURCES.map(r => [r.subscriptionId, { id: r.subscriptionId, name: r.subscriptionName }])).values()],
+    subscriptions: [...new Map(allResources.map(r => [r.subscriptionId, { id: r.subscriptionId, name: r.subscriptionName }])).values()],
     resourceGroups: [...new Set(filteredResources.map(r => r.resourceGroup))].sort(),
-    locations: [...new Set(MOCK_RESOURCES.map(r => r.location))].sort(),
-    resourceTypes: [...new Set(MOCK_RESOURCES.map(r => r.type))].sort(),
-  }), [filteredResources])
+    locations: [...new Set(allResources.map(r => r.location))].sort(),
+    resourceTypes: [...new Set(allResources.map(r => r.type))].sort(),
+  }), [allResources, filteredResources])
 
-  return { filteredResources, kpi, bySubscription, byType, byLocation, advisorByImpact, untaggedResources, availableOptions }
+  return {
+    filteredResources, kpi, bySubscription, byType, byLocation,
+    advisorByImpact, untaggedResources, availableOptions,
+    loading, error, isLive,
+  }
 }

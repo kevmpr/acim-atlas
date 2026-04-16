@@ -22,8 +22,11 @@ window.addEventListener('message', (e) => {
   }
 })
 
+const token = params.get('token')
+const tenantId = params.get('tenantId')
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <App />
+    <App token={token} tenantId={tenantId} />
   </StrictMode>
 )
