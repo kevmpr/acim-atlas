@@ -115,7 +115,7 @@ export function AtlasTutorialOverlay() {
     function handleMessage(event: MessageEvent) {
       const shellUrl = (import.meta.env.VITE_SHELL_URL as string)?.trim()
       if (shellUrl && event.origin !== shellUrl) return
-      if (event.data?.type === 'ACIM_TUTORIAL_START') {
+      if (event.data?.type === 'AUSTRAL_TUTORIAL_START') {
         setCurrentStep(0)
         setIsActive(true)
       }
