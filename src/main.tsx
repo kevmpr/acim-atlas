@@ -15,7 +15,7 @@ if (urlTheme) localStorage.setItem('theme', urlTheme)
 
 // Listen for theme changes from Shell
 window.addEventListener('message', (e) => {
-  if (e.data?.type === 'ACIM_THEME') {
+  if (e.data?.type === 'AUSTRAL_THEME') {
     const t = e.data.theme as string
     if (t === 'dark') document.documentElement.classList.add('dark')
     else document.documentElement.classList.remove('dark')
