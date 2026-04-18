@@ -4,8 +4,10 @@
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Frame-Options", "value": "ALLOWFROM https://austral-sa.vercel.app" },
-        { "key": "Content-Security-Policy", "value": "frame-ancestors 'self' https://austral-sa.vercel.app https://austral-kevins-projects-94a9d818.vercel.app" }
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://austral-sa.vercel.app https://austral-kevins-projects-94a9d818.vercel.app https://*.vercel.app"
+        }
       ]
     }
   ]
